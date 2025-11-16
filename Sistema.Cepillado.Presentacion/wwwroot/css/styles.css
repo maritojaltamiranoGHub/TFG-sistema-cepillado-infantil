@@ -1,0 +1,237 @@
+:root {
+    --color-primario: #22b1a8;
+    --color-primario-claro: #8dd5d0;
+    --color-texto: #333;
+    --color-texto-claro: #ababab;
+    --color-borde-oscuro: #777;
+    --color-background: #f0f0f0;
+    --max-width: 900px;
+}
+
+/*#region GENERALES*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    font-size: 1.6rem;
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 2.0rem;
+    font-weight: 600;
+}
+
+h3 {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.input,
+.input-group input {
+    padding: 14px 20px;
+    width: 100%;
+    border: 1px solid var(--color-primario-claro);
+    border-radius: 16px;
+    font-size: 1.4rem;   
+}
+
+.input-group > .form-control {
+    width: 100%;
+}
+
+.input::placeholder,
+.input-group input::placeholder {
+    color: var(--color-texto-claro);
+}
+
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-control, .input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-select, .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-radius: 16px;
+}
+
+.register-form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+.upload-form {
+    flex-grow: 1;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.upload-form-dark {
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.validation-message {
+    font-size: 1.2rem;
+    margin-top: 6px;
+    padding-left: 6px;
+}
+
+.button,
+.button-alt {
+    padding: 4px 20px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    border-radius: 20px;
+    transition: background-color 0.2s ease;
+}
+
+.button {
+    background-color: var(--color-primario);
+    border: 2px solid var(--color-primario);
+    color: #fff;
+}
+
+.button:hover {
+    background-color: #007A72;
+}
+
+.button-alt {
+    color: var(--color-primario);
+    border: 2px solid var(--color-borde-oscuro);
+}
+
+.scroll-invisible {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scroll-invisible::-webkit-scrollbar {
+    display: none;
+}
+
+.page-container {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.container-max-width {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    /*margin-left: 50%;
+    transform: translateX(-50%);*/
+}
+
+/*#endregion GENERALES */
+
+/*#region INTERFAZ*/
+
+.adorno-superior {
+    height: 170px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+    background-color: var(--color-primario);
+}
+
+.adorno-superior::after {
+    content: '';
+    position:absolute;
+    top: 100%;
+    background-color: transparent;
+    border-top-left-radius: 30px;
+    box-shadow: -20px -4px 0 0 var(--color-primario);
+    width: 80px;
+    height: 26px;
+}
+
+.adorno-superior::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: transparent;
+    border-top-right-radius: 30px;
+    box-shadow: 20px -4px 0 0 var(--color-primario);
+    width: 80px;
+    height: 26px;
+}
+
+/*#endregion INTERFAZ*/
+
+/*#region LOGIN*/
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login__btn-login,
+.login__btn-register {
+    width: 80%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.login__btn-login {
+    margin-top: 80px;
+}
+
+/*#endregion LOGIN*/
+
+/*#region CREATE_PROFILE*/
+
+.profile-form {
+    margin-top: -20px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/*#endregion CREATE_PROFILE*/
+
+/*#region EDIT_PROFILE*/
+
+.edit-profile-container .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    border-radius: 8px;
+    background-color: var(--color-background);
+}
+
+.edit-profile-container .edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/*#endregion EDIT_PROFILE*/
