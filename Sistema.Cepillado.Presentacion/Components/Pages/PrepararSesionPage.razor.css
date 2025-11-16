@@ -1,0 +1,122 @@
+.prep-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 24px;
+	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+	height: 100%;
+	max-height: 800px;
+}
+
+.prep-container h3 {
+	color: #fff;
+	font-size: 1.8rem;
+	margin-top: 20px;
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 30px;
+	max-width: 700px;
+	background-color: #fff;
+	border-radius: 24px;
+	padding: 24px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	flex-grow: 1;
+}
+
+.card-header {
+	background-color: transparent;
+	border: none;
+	padding: 0;
+}
+
+.card-header h2 {
+	margin-top: 20px;
+	font-weight: 500;
+}
+
+.card-header p {
+	font-size: 1.6rem;
+	color: var(--color-primario);
+	line-height: 1.5;
+	margin-top: 80px;
+	font-weight: 500;
+	text-align: center;
+}
+
+.file-input-wrapper {
+	position: relative;
+	width: 100%;
+	margin-top: 20px;
+}
+
+.file-input-hidden {
+	/* Ocultamos completamente el input de archivo por defecto */
+	display: none;
+	position: absolute;
+	width: 0.1px;
+	height: 0.1px;
+	z-index: -1;
+}
+
+.file-input-label {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 16px;
+	border: 1px solid #00A99D;
+	border-radius: 16px;
+	background-color: #fff;
+	font-size: 16px;
+	color: #888;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+	.file-input-label:hover {
+		background-color: #f9f9f9;
+	}
+
+	.file-input-label svg {
+		color: #00A99D;
+	}
+
+	.file-input-label span {
+		/* Evita que el nombre del archivo largo se desborde */
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-right: 10px;
+	}
+
+.btn-primary-large {
+	padding: 20px;
+	width: 100%;
+	border: none;
+	border-radius: 24px;
+	background-color: #00A99D;
+	color: #fff;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	margin-top: 16px;
+	margin-bottom: 30px;
+}
+
+	.btn-primary-large:hover {
+		background-color: #007A72;
+	}
+
+.inputs-container {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+}

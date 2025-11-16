@@ -1,0 +1,132 @@
+.history-page-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%; /* Ocupa toda la altura disponible en el AppLayout */
+}
+
+.header-container {
+	margin: 0 auto;
+	transform: none;
+}
+
+.history-header {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	background-color: #00A99D; /* Color verde azulado principal */
+	color: white;
+	padding: 24px 20px;
+	width: 100vw;
+}
+
+.history-header::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background-color: transparent;
+	border-top-left-radius: 30px;
+	box-shadow: -20px -4px 0 0 var(--color-primario);
+	width: 80px;
+	height: 26px;
+}
+
+.history-header::before {
+	content: '';
+	position: absolute;
+	top: 100%;
+	right: 0;
+	background-color: transparent;
+	border-top-right-radius: 30px;
+	box-shadow: 20px -4px 0 0 var(--color-primario);
+	width: 80px;
+	height: 26px;
+}
+
+.history-header h2 {
+	text-align: center;
+	margin: 0 0 24px 0;
+}
+
+.filters {
+	display: flex;
+	gap: 16px;
+}
+
+.filter-group {
+	flex: 1;
+}
+
+.filter-group label {
+	display: block;
+	font-weight: 500;
+	font-size: 1.4rem;
+	margin-bottom: 4px;
+}
+
+.filter-button {
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	color: #333;
+	padding: 8px 16px;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.child-filter .dot {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background-color: #4CAF50; /* Un verde para el punto, puedes cambiarlo */
+	margin-right: 8px;
+}
+
+.history-list {
+	flex: 1; /* Ocupa el resto del espacio */
+	padding: 24px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	overflow-y: auto; /* Permite scroll si la lista es muy larga */
+}
+
+.history-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #fff;
+	padding: 12px 20px;
+	border-radius: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+	.history-item:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+	}
+
+.session-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+	.session-info .date {
+		font-size: 16px;
+		color: #333;
+	}
+
+	.session-info .effectiveness {
+		font-size: 18px;
+		font-weight: bold;
+		color: #333;
+	}
+
+.arrow-icon svg {
+	color: #00A99D;
+}

@@ -1,0 +1,53 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+
+<div class="splash-container">
+    <img src="img/LogoToothhabit.svg" alt="Toot Habit Logo" class="logo" />
+</div>
+
+@code {
+    private Timer? _navigationTimer;
+
+    protected override void OnInitialized()
+    {
+        // Navegar a la página de perfiles después de 3 segundos
+        _navigationTimer = new Timer(NavigateToNextPage, null, 3000, Timeout.Infinite);
+    }
+
+    private void NavigateToNextPage(object? state)
+    {
+        // Asegúrate de que la navegación se ejecute en el subproceso de la interfaz de usuario
+        InvokeAsync(() =>
+        {
+            NavigationManager.NavigateTo("/login");
+            
+            //NavigationManager.NavigateTo("/create-profile");
+            //NavigationManager.NavigateTo("/edit-child-profile/1");
+            //NavigationManager.NavigateTo("/edit-tutor-profile");
+            //NavigationManager.NavigateTo("/history");
+            //NavigationManager.NavigateTo("/home-profile");
+            //NavigationManager.NavigateTo("/load-pattern/1");
+            //NavigationManager.NavigateTo("/login");
+            //NavigationManager.NavigateTo("/prepare-session");
+            //NavigationManager.NavigateTo("/profiles");
+            //NavigationManager.NavigateTo("/register");
+            //NavigationManager.NavigateTo("/select-profile");
+            //NavigationManager.NavigateTo("/session-report");
+
+
+            // Detén el timer para que no se ejecute de nuevo
+            _navigationTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+        });
+    }
+
+    // Limpia el timer cuando el componente se destruye
+    public async ValueTask DisposeAsync()
+    {
+        if (_navigationTimer is IAsyncDisposable disposableTimer)
+        {
+            await disposableTimer.DisposeAsync();
+        }
+    }
+}

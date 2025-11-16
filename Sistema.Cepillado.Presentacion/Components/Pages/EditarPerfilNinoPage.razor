@@ -1,0 +1,143 @@
+﻿@page "/editar-perfil-nino/{ProfileId:int}"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Presentacion.Components
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Dominio.Modelos
+@inject IServicioPerfilNino ServicioPerfilNino
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+
+
+<div class="adorno-superior"></div>
+
+<div class="edit-profile page-container">
+    <div class="edit-profile-container container-max-width">
+        <header class="edit-profile-header">
+            <button class="back-button" @onclick="GoBack">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <h3>Perfil de @_model.Nombre</h3>
+        </header>
+
+        <EditForm Model="@_model" OnValidSubmit="HandleUpdateProfile" class="edit-form">
+            <DataAnnotationsValidator />
+
+            <div class="form-card">
+                <h2>Datos personales</h2>
+
+                <div class="input-group">
+                    <label for="nombre">Nombre</label>
+                    <InputText id="nombre" @bind-Value="_model.Nombre" class="form-control-static" />
+                    <ValidationMessage For="@(() => _model.Nombre)" />
+                </div>
+
+                <div class="input-group">
+                    <label for="fechanacimiento">Fecha de nacimiento</label>
+                    <InputDate id="fechanacimiento" @bind-Value="_model.FechaNacimiento" class="form-control-static" />
+                    <ValidationMessage For="@(() => _model.FechaNacimiento)" />
+                </div>
+            </div>
+            <div class="avatar-selector">
+                <h2 class="avatar-selector__subtitle">Elige un avatar</h2>
+                <div class="avatar-options">
+                    @foreach (var avatar in _avatars)
+                    {
+                        <div class="avatar-option @(IsAvatarSelected(avatar) ? "selected" : "")" @onclick="() => SelectAvatar(avatar)">
+                            <img src="img/avatars/@(avatar)" alt="Avatar @(avatar)" />
+                        </div>
+                    }
+                </div>
+                <ValidationMessage For="@(() => _model.AvatarSeleccionado)" />
+            </div>
+
+            <button type="submit" class="btn-secondary-large" @onclick="HandleUpdateProfile">Guardar Cambios</button>
+
+        </EditForm>
+
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int ProfileId { get; set; }
+
+    private int idTutor;
+
+    private EditarPerfilNinoViewModel _model = new();
+
+    private List<string> _avatars = new() { "avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png" };
+
+    private void SelectAvatar(string avatar)
+    {
+        _model.AvatarSeleccionado = avatar;
+    }
+
+    private bool IsAvatarSelected(string avatar)
+    {
+        return _model.AvatarSeleccionado == avatar;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+      
+        // Este valor debe ser obtenido del contexto de autenticación del tutor actual
+        // busco los datos del perfil por el ProfileId
+        var perfil =  await ServicioPerfilNino.ObtenerPerfilNinoPorId(ProfileId);
+        if (perfil != null)
+        {
+            idTutor = perfil.TutorId;//guardar el id del tutor asociado al niño
+
+            _model = new EditarPerfilNinoViewModel
+            {
+                
+                Nombre = perfil.Nombre,
+                FechaNacimiento = perfil.FechaNacimiento,
+                AvatarSeleccionado = perfil.Avatar,
+                Id = perfil.Id,
+
+            };
+        }
+
+        
+    }
+
+    private async Task HandleUpdateProfile()
+    {
+        //crear una instancia de tutor con los datos actualizados
+        Nino ninoActualizado = new Nino
+        {
+            Id = _model.Id,
+            Nombre = _model.Nombre,
+            FechaNacimiento = _model.FechaNacimiento.HasValue ? _model.FechaNacimiento.Value : DateTime.MinValue,
+            Avatar = _model.AvatarSeleccionado,
+            TutorId = idTutor
+            // Este campo se debe manejar adecuadamente según la lógica de la aplicación
+        };
+
+
+        var result = ServicioPerfilNino.ActualizarPerfilNino(ninoActualizado);
+
+        if (result == null)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Error al actualizar el perfil del Niño.");
+
+        }// Si la actualización es exitosa, actualizamos el estado
+        else
+        {
+           
+            await JSRuntime.InvokeVoidAsync("alert", "Perfil Niño actualizado correctamente.");
+            GoBack();
+        }
+        
+    }
+
+    
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/perfiles");
+    }
+}

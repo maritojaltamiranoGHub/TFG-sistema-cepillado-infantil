@@ -1,0 +1,7 @@
+.main-layout-container {
+	/* La clave está aquí: hacemos que el layout ocupe toda la altura y sea un contenedor flex */
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* Ocupa al menos toda la altura de la pantalla */
+	background-color: var(--color-background);
+}

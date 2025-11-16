@@ -1,0 +1,176 @@
+.load-pattern {
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    flex-direction: column;
+	align-items: center;
+    background-color: #212121; /* Fondo oscuro */
+}
+
+.load-pattern-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	color: #fff;
+	padding: 16px;
+	box-sizing: border-box;
+	max-width: 900px;
+	width: 100%;
+}
+
+.load-pattern-header {
+	/* ... estilos para el header y el botón de atrás ... */
+}
+
+.wizard-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 16px;
+	height: 100vh;
+	max-height: 700px;
+}
+
+	.wizard-content h1 {
+		margin-bottom: 24px;
+	}
+
+.denture-image-dark {
+	width: 100%;
+	max-width: 280px;
+	margin-bottom: 24px;
+}
+
+	.denture-image-dark img {
+		width: 100%;
+		opacity: 0.8; /* Efecto visual para el modo oscuro */
+	}
+
+.progress-bar {
+	margin-top: 20px;
+	width: 100%;
+	height: 8px;
+	background-color: #444;
+	border-radius: 4px;
+	margin-bottom: 40px;
+	overflow: hidden;
+}
+
+.progress-bar-fill {
+	height: 100%;
+	background-color: #00A99D;
+	border-radius: 4px;
+	transition: width 0.3s ease;
+}
+
+/* Reutilizamos la lógica del input de archivo, pero con colores oscuros */
+.file-input-label-dark {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px;
+	border-radius: 16px;
+	background-color: #333;
+	color: #ccc;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+	.file-input-label-dark svg {
+		color: #00A99D;
+	}
+
+.file-input-overlay { /* ... (igual que antes) ... */
+}
+
+.btn-primary-large-dark {
+	padding: 20px;
+	border-radius: 24px;
+	background-color: #00A99D;
+	color: white;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	border: none;
+	margin-bottom: 30px;
+}
+
+	.btn-primary-large-dark:disabled {
+		background-color: #555;
+		cursor: not-allowed;
+	}
+
+.completion-message {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	gap: 24px;
+}
+
+
+.file-input-label {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 16px;
+	border: 1px solid #00A99D;
+	border-radius: 16px;
+	background-color: #fff;
+	font-size: 16px;
+	color: #888;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+	.file-input-label:hover {
+		background-color: #f9f9f9;
+	}
+
+	.file-input-label svg {
+		color: #00A99D;
+	}
+
+	.file-input-label span {
+		/* Evita que el nombre del archivo largo se desborde */
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		padding-right: 10px;
+	}
+
+	.inputs-container {
+		display: flex;
+		flex-grow: 1;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+.back-button__icon {
+	width: 32px;
+	height: 32px;
+	color: var(--color-primario);
+	flex-shrink: 0;
+	background-color: transparent;
+}
+
+	.back-button__icon path {
+		fill: none;
+		stroke: var(--color-primario);
+		stroke-width: 40;
+	}
+
+.back-button {
+	margin-bottom: 24px;
+	background: none;
+	border: none;
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

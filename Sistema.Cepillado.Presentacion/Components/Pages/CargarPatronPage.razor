@@ -1,0 +1,138 @@
+﻿@page "/cargar-patron"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="load-pattern">
+    <div class="load-pattern-container">
+        @if (!_model.EstaCompleto)
+        {
+            <header class="load-pattern-header">
+                <button class="back-button" @onclick="GoBack">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" fill="currentColor" class="back-button__icon">
+                        <path d="M169.4 297.4C156.9 309.9 156.9 330.2 169.4 342.7L361.4 534.7C373.9 547.2 394.2 547.2 406.7 534.7C419.2 522.2 419.2 501.9 406.7 489.4L237.3 320L406.6 150.6C419.1 138.1 419.1 117.8 406.6 105.3C394.1 92.8 373.8 92.8 361.3 105.3L169.3 297.3z" /></svg>
+                </button>
+            </header>
+
+            <div class="wizard-content">
+                <h1>Zona @(_model.IndiceZonaActual + 1)/@_model.Zonas.Count: @_model.ZonaActual.Nombre</h1>
+
+                <div class="denture-image-dark">
+                    <img src="@_model.ZonaActual.Imagen" alt="Zona a cepillar" />
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: @(GetProgressPercentage() + "%")"></div>
+                </div>
+
+                <EditForm Model="@_model" OnValidSubmit="HandleLoadZone" class="upload-form-dark">
+
+                    <div class="inputs-container">
+                        <div class="file-input-wrapper">
+                            <InputFile OnChange="LoadGyroFile" style="display: none;" id="gyroFile" />
+                            <label for="gyroFile" class="file-input-label">
+                                <span>@(GyroFileName)</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            </label>
+                            <ValidationMessage For="@(() => _model.ArchivoGiroscopio)" />
+                        </div>
+
+                        <div class="file-input-wrapper">
+                            <InputFile OnChange="LoadAccelFile" style="display: none;" id="accelFile" />
+                            <label for="accelFile" class="file-input-label">
+                                <span>@(AccelFileName)</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            </label>
+                            <ValidationMessage For="@(() => _model.ArchivoAcelerometro)" />
+                        </div>
+                    </div>
+
+                    @* 
+                <label class="file-input-label-dark">
+                    <span>@(GyroFileName)</span>
+                    <!-- Icono SVG -->
+                    <InputFile OnChange="LoadGyroFile" class="file-input-overlay" />
+                </label>
+
+                <label class="file-input-label-dark">
+                    <span>@(AccelFileName)</span>
+                    <!-- Icono SVG -->
+                    <InputFile OnChange="LoadAccelFile" class="file-input-overlay" />
+                </label> *@
+
+                    <button type="submit" class="btn-primary-large-dark" disabled="@(_model.ArchivoGiroscopio == null || _model.ArchivoAcelerometro == null)">
+                        Cargar zona
+                    </button>
+                </EditForm>
+            </div>
+        }
+        else
+        {
+            <div class="completion-message">
+                <h1>¡Patrón completado!</h1>
+                <p>Has cargado los datos para todas las zonas. El patrón de referencia personalizado ha sido creado.</p>
+                <button class="btn-primary-large-dark" @onclick="GoBack">Finalizar</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public int ProfileId { get; set; }
+
+    private CargarPatronViewModel _model = new();
+    private string GyroFileName { get; set; } = "Cargar archivo de Giroscopo *.csv";
+    private string AccelFileName { get; set; } = "Cargar archivo de Acelerometro *.csv";
+
+    protected override void OnInitialized()
+    {
+        _model.PerfilNinoId = ProfileId;
+        LoadDentalZones();
+    }
+
+    private void LoadDentalZones()
+    {
+        // En una app real, esto vendría de una base de datos o un servicio.
+        _model.Zonas = new List<ZonaDental>
+        {
+            new() { Id = 1, Nombre = "Molares superiores derechos.", Imagen = "img/dentures/zone1.png" },
+            new() { Id = 2, Nombre = "Incisivos superiores.", Imagen = "img/dentures/zone2.png" },
+            // ... Añadir las 13/14 zonas restantes
+            new() { Id = 15, Nombre = "Molares inferiores izquierdos.", Imagen = "img/dentures/zone15.png" }
+        };
+    }
+
+    private void LoadGyroFile(InputFileChangeEventArgs e) { /* ... */ }
+    private void LoadAccelFile(InputFileChangeEventArgs e) { /* ... */ }
+
+    private async Task HandleLoadZone()
+    {
+        // --- Lógica de Guardado Real ---
+        // Aquí llamarías a un servicio para guardar los archivos para la zona actual
+        // await _patternService.AddZoneDataAsync(_model.ChildProfileId, _model.CurrentZone.Id, _model.GyroscopeFile, _model.AccelerometerFile);
+
+        // Avanzar a la siguiente zona
+        _model.IndiceZonaActual++;
+
+        // Limpiar para la siguiente carga
+        _model.ArchivoGiroscopio = null;
+        _model.ArchivoAcelerometro = null;
+        GyroFileName = "Cargar archivo de Giroscopo *.csv";
+        AccelFileName = "Cargar archivo de Acelerometro *.csv";
+
+        StateHasChanged(); // Forzar a la UI a actualizarse
+    }
+
+    private double GetProgressPercentage()
+    {
+        return (_model.IndiceZonaActual / (double)_model.Zonas.Count) * 100;
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/editar-perfil-tutor");
+    }
+}

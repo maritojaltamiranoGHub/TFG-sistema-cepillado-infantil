@@ -1,0 +1,99 @@
+﻿@page "/panel-perfil"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Dominio.Modelos
+@using Sistema.Cepillado.Presentacion.Compartido
+@layout AppLayout
+@inject NavigationManager Navigation
+
+<div class="adorno-superior"></div>
+
+<div class="page-container container-max-width">
+
+    <div class="dashboard-container">
+
+        <header class="dashboard-header">
+            <img src="img/logo.png" alt="Toothabit Logo" class="logo" />
+        </header>
+
+        <div class="profile-card-main">
+            <div class="avatar">
+                <img src="@_model.PerfilActual?.UrlAvatar" alt="Avatar" />
+            </div>
+            <div class="profile-info">
+                <span class="name">@_model.PerfilActual?.Nombre, @_model.PerfilActual?.EdadAños años</span>
+                <span class="change-user" @onclick="ChangeUser">Cambiar usuario</span>
+            </div>
+        </div>
+
+        <div class="session-card">
+            <h2>Última sesión</h2>
+            @if (_model.UltimaSesion != null)
+            {
+                <div class="session-summary">
+                    <span class="percentage">@_model.UltimaSesion.Efectividad%</span>
+                    <span class="label">Efectividad general</span>
+                    <span class="details">Fecha: @_model.UltimaSesion.Fecha.ToString("dd/MM/yyyy")</span>
+                    <span class="details">Duración total: @_model.UltimaSesion.DuracionEfectiva.ToString("m' min.' ss' seg.'")</span>
+                </div>
+            }
+            else
+            {
+                <p>Aún no hay sesiones registradas. ¡Inicia una nueva!</p>
+            }
+        </div>
+
+        <button class="btn-primary-large" @onclick="StartNewSession">Iniciar sesión de cepillado</button>
+    </div>
+
+</div>
+
+@code {
+
+    private Nino perfilNinoActivo;
+
+    private PanelViewModel _model = new();
+
+    protected override void OnInitialized()
+    {
+        perfilNinoActivo = Estado.GetNinoActivo();
+
+        if (perfilNinoActivo == null)
+        {
+            Navigation.NavigateTo("/seleccionar-perfil");
+        }   
+
+        // --- Simulación para el Prototipo ---
+        LoadSampleData();
+    }
+
+    private void LoadSampleData()
+    {
+        _model = new PanelViewModel
+
+        {
+            PerfilActual = new PerfilNinoViewModel
+            {
+                Id = perfilNinoActivo.Id,
+                Nombre = perfilNinoActivo.Nombre,
+                FechaNacimiento = perfilNinoActivo.FechaNacimiento,
+                UrlAvatar = "img/avatars/" + perfilNinoActivo.Avatar
+            },
+            UltimaSesion = new UltimaSesionViewModel
+            {
+                Efectividad = 88,
+                Fecha = new DateOnly(2025, 11, 16),
+                DuracionEfectiva = new TimeOnly(0, 1, 30)
+            }
+        };
+    }
+
+    private void ChangeUser()
+    {
+        Navigation.NavigateTo("/seleccionar-perfil");
+    }
+
+    private void StartNewSession()
+    {
+        Navigation.NavigateTo("/preparar-sesion"); // Ruta a la pantalla de carga de archivos
+    }
+}

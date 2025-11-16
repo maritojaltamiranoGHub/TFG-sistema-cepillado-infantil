@@ -1,0 +1,71 @@
+﻿@page "/preparar-sesion"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Presentacion.Compartido
+@layout AppLayout
+@inject NavigationManager Navigation
+
+<div class="adorno-superior"></div>
+
+<div class="prep-container">
+    <h3>Preparación de sesión</h3>
+    <div class="card">
+        <div class="card-header">
+            <h2>Preparando sesión de Estado de @Estado.GetNinoActivo().Nombre</h2> 
+            <p>Si ya tiene los archivos del experimento, carguá la referencia de cada sensor y presione <b>"Iniciar Análisis"</b></p>
+        </div>
+
+        <EditForm Model="@_model" OnValidSubmit="HandleAnalysis" class="upload-form">
+            <DataAnnotationsValidator />
+
+            <div class="inputs-container">
+                <div class="file-input-wrapper">
+                    <InputFile OnChange="LoadGyroFile" class="file-input-hidden" style="display: none;" id="gyroFile" />
+                    <label for="gyroFile" class="file-input-label">
+                        <span>@(GyroFileName)</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    </label>
+                    <ValidationMessage For="@(() => _model.ArchivoGiroscopio)" />
+                </div>
+
+                <div class="file-input-wrapper">
+                    <InputFile OnChange="LoadAccelFile" class="file-input-hidden" style="display: none;" id="accelFile" />
+                    <label for="accelFile" class="file-input-label">
+                        <span>@(AccelFileName)</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    </label>
+                    <ValidationMessage For="@(() => _model.ArchivoAcelerometro)" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary-large">Iniciar Análisis</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private PrepararSesionViewModel _model = new();
+    private string GyroFileName { get; set; } = "Cargar archivo de Giroscopo *.csv";
+    private string AccelFileName { get; set; } = "Cargar archivo de Acelerometro *.csv";
+
+    private void LoadGyroFile(InputFileChangeEventArgs e)
+    {
+        _model.ArchivoGiroscopio = e.File;
+        GyroFileName = e.File.Name;
+    }
+
+    private void LoadAccelFile(InputFileChangeEventArgs e)
+    {
+        _model.ArchivoAcelerometro = e.File;
+        AccelFileName = e.File.Name;
+    }
+
+    private async Task HandleAnalysis()
+    {
+        // --- Lógica de Análisis Real ---
+         
+
+        // --- Simulación para el Prototipo ---
+        // Simulamos el análisis y navegamos a la pantalla de reporte.
+        Navigation.NavigateTo("/sesion-reporte");
+    }
+}

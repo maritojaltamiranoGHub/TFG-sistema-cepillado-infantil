@@ -1,0 +1,89 @@
+﻿@page "/sesion-reporte"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@inject NavigationManager Navigation
+
+<div class="report-container">
+    <header class="report-header">
+        <div class="header-container container-max-width">
+            <button class="back-button" @onclick="GoBack">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <h3>Reporte de sesión</h3>
+        </div>
+    </header>
+
+    <section class="report__body scroll-invisible container-max-width">
+
+        <div class="card">
+            <h2>Efectividad general</h2>
+            <div class="progress-circle" style="--progress-value: @(_model.EfectividadGeneral)">
+                <div class="progress-circle-inner">
+                    <span>@_model.EfectividadGeneral </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Cobertura por zona</h2>
+            <div class="denture-image">
+                <!-- Aquí irá la imagen de la dentadura. La colorearemos con SVG o CSS overlay en el futuro -->
+                <img src="img/dentadura.png" alt="Diagrama de dentadura" />
+            </div>
+            <div class="legend">
+                <div class="legend-item"><span class="color-box optimal"></span> Óptimo</div>
+                <div class="legend-item"><span class="color-box improvable"></span> Mejorable</div>
+                <div class="legend-item"><span class="color-box insufficient"></span> Insuficiente</div>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="footer-container">
+        <footer class="report-footer container-max-width">
+            <div class="footer-item">
+                <span class="label">Duración total</span>
+                <span class="value">@_model.DuracionTotal.ToString(@"m\:ss' min'")</span>
+            </div>
+            <div class="footer-item">
+                <span class="label">Fecha último reporte</span>
+                <span class="value">@_model.FechaReporte.ToString("dd/MM/yy")</span>
+            </div>
+        </footer>
+    </div>
+    
+</div>
+
+
+@code {
+    private ReporteViewModel _model = new();
+
+    protected override void OnInitialized()
+    {
+        // --- Carga de Datos Real ---
+        // Aquí obtendrías el resultado del análisis desde un servicio de estado
+        // _model = _appState.LastResult;
+    
+        // --- Simulación para el Prototipo ---
+        LoadSampleData(); 
+    }
+    private void LoadSampleData()
+    {
+        _model = new ReporteViewModel
+        {
+            EfectividadGeneral = 88,
+            DuracionTotal = new TimeSpan(0, 2, 30),
+            FechaReporte = new DateOnly(2025, 1, 1),
+            CoberturaZonas = new Dictionary<string, EstadoCobertura>
+            {
+                // Aquí irían los datos reales para colorear la dentaduraReporte     { "MolarSuperiorDerecho", CoverageStatus.Optimal },
+                { "IncisivoSuperior", EstadoCobertura.Insuficiente },
+                // etc.
+            }
+        };
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/panel-perfil"); // Vuelve a la pantalla principal del niño
+    }
+}

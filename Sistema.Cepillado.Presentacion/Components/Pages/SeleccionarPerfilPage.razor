@@ -1,0 +1,63 @@
+﻿@page "/seleccionar-perfil"
+@using Sistema.Cepillado.Dominio.Modelos
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Presentacion.Compartido
+@inject IServicioPerfilNino ServicioPerfilNino
+@inject IServicioTutores ServicioTutores
+@inject NavigationManager Navigation
+
+<div class="select-profile-container">
+    <h1>¡A sonreír! Escoge a tu campeón</h1>
+
+    <div class="profiles-grid">
+        @foreach (var profile in _profiles)
+        {
+            <div class="profile-card" @onclick="() => SelectProfile(profile.Id)">
+                <div class="avatar-circle">
+                    <img src="@profile.UrlAvatar" alt="Avatar de @profile.Nombre" />
+                </div>
+                <span class="profile-name">@profile.Nombre</span>
+            </div>
+        }
+    </div>
+    <button class="btn-fab" @onclick="AddNewProfile">+</button>
+</div>
+
+@code {
+    private List<PerfilNinoViewModel> _profiles = new();
+
+    protected override void OnInitialized()
+    {
+        var tutorActivo = Estado.GetTutorActivo();
+        // --- Carga de Datos ---
+        // llamo al servicio tutor para obtener los perfilesde hijos
+        var perfilesNinos = ServicioTutores.ObtenerNinosPorTutor(tutorActivo.Id);
+        // Mapeo los datos al ViewModel
+        _profiles = perfilesNinos.Select(nino => new PerfilNinoViewModel
+        {
+            Id = nino.Id,
+            Nombre = nino.Nombre,
+            UrlAvatar = "img/avatars/" + nino.Avatar
+        }).ToList();
+    }
+
+    private async Task SelectProfile( int profile)
+    {
+        // --- Lógica de Selección ---
+
+        //Busco el perfil seleccionado y lo asigno a un objeto de tipo Nino
+        var   perfilSeleccionado = await ServicioPerfilNino.ObtenerPerfilNinoPorId(profile);
+
+        // Guadrdo el perfil seleccionado en un variable compartida//Esto lo voy a tener que cambiar!!
+        Estado.SetNinoActivo(perfilSeleccionado);
+        // --- Navegación ---
+        Navigation.NavigateTo("/panel-perfil"); // Navegamos a la página principal del Perfil (Dashboard)
+    }
+
+    private void AddNewProfile()
+    {
+        // Navegar a la pantalla de creación de nuevo perfil
+        Navigation.NavigateTo("/crear-perfil");
+    }
+}

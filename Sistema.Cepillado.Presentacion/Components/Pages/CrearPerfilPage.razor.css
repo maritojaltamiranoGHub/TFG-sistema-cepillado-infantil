@@ -1,0 +1,125 @@
+.profile {
+    background-color: var(--color-background);
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 40px 24px;
+    box-sizing: border-box;
+	width: 100%;
+    max-width: 700px;
+	overflow-x: hidden;
+}
+
+.header {
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+	.header h1 {
+		margin-bottom: 8px;
+	}
+
+	.header p {
+		font-size: 16px;
+		color: #666;
+	}
+
+.profile-form {
+	width: 100%;
+	max-width: 400px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px; /* Aumentamos el espacio para la sección de avatares */
+}
+
+.input-group {
+	width: 100%;
+}
+
+.form-control {
+	width: 100%;
+	padding: 16px;
+	border: 1px solid #00A99D;
+	border-radius: 16px;
+	background-color: #fff;
+	font-size: 16px;
+	box-sizing: border-box;
+}
+
+	.form-control:focus {
+		outline: none;
+		border-color: #007A72;
+		box-shadow: 0 0 0 2px rgba(0, 169, 157, 0.2);
+	}
+
+.avatar-selector {
+	width: 100%;
+	text-align: center;
+	margin-top: 50px;
+}
+
+	.avatar-selector h2 {
+		font-size: 18px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 16px;
+	}
+
+.avatar-options {
+	
+	display: flex;
+	justify-content: space-around; /* O 'space-between' si prefieres */
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.avatar-option {
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 50%; /* Círculo */
+	border: 2px solid transparent;
+	transition: border-color 0.2s ease;
+}
+
+	.avatar-option img {
+		width: 60px; /* Ajusta el tamaño según tus imágenes */
+		height: 60px;
+		display: block;
+	}
+
+	.avatar-option.selected {
+		border-color: #00A99D; /* Borde verde para el avatar seleccionado */
+	}
+
+
+.create-profile__btn-save {
+	width: 90%;
+	margin-top: 40px;
+	margin-left: 50%;
+	transform: translateX(-50%);
+}
+
+.avatar-selector__subtitle {
+	align-self: start;
+	justify-self: left;
+}
+
+@media (max-width: 404px) {
+
+	.avatar-option {
+		flex-basis: 50%;
+		display: grid;
+		place-items: center;
+	}
+
+}

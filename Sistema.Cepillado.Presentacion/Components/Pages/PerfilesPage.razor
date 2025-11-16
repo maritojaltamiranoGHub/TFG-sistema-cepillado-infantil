@@ -1,0 +1,111 @@
+﻿@page "/perfiles"
+@using Sistema.Cepillado.Aplicacion.Servicios
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Presentacion.Compartido
+@using Sistema.Cepillado.Presentacion.ViewModels
+@inject IServicioTutores ServicioTutores
+@layout AppLayout
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="profiles-page-container">
+    <header class="profiles-header">
+        <h2>Perfiles</h2>
+    </header>
+
+    <div class="profiles-list-container">
+        <div class="profile-list container-max-width">
+            <!-- Perfil del Tutor -->
+            <div class="profile-item tutor-profile">
+                <div class="profile-details">
+                    <span class="name">@_model.NombreTutor</span>
+                    <span class="role">Tutor/padre</span>
+                    <span class="logout-link" @onclick="HandleLogout">Cerrar Sesión</span>
+                </div>
+                <button class="btn-manage" @onclick="ManageTutorProfile">Gestionar</button>
+            </div>
+
+            <!-- Perfiles de los Niños -->
+            @foreach (var child in _model.PerfilesNinos)
+            {
+                bool isActive = child.Id == (Estado.GetNinoActivo()?.Id ?? 0);
+
+                <div class="profile-item child-profile @(isActive ? "profile-item-active" : "")">
+                    <div class="profile-details">
+                        <img src="@child.UrlAvatar" alt="Avatar de @child.Nombre" class="avatar" />
+                        <span class="name">@child.Nombre</span>
+
+                        @if (isActive)
+                        {
+                            <span class="active-badge">ACTIVO</span>
+                        }
+                    </div>
+                    <button class="btn-manage" @onclick="() => ManageChildProfile(child.Id)">Gestionar</button>
+                </div>
+            }
+        </div>
+
+        <button class="btn-fab" @onclick="AddNewProfile">+</button>
+    </div>
+</div>
+
+@code {
+    private PerfilesViewModel _model = new();
+    private List<PerfilNinoViewModel> _profiles = new();
+    
+
+    int tutorActivoId = Estado.GetTutorActivo()?.Id ?? 0;
+
+    protected override void OnInitialized()
+    {
+       
+        // --- Carga de Datos ---
+        // llamo al servicio tutor para obtener los perfiles de hijos
+        var PerfilesNinos = ServicioTutores.ObtenerNinosPorTutor(tutorActivoId);
+        // Mapeo los datos al ViewModel
+        _profiles = PerfilesNinos.Select(nino => new PerfilNinoViewModel
+        {
+            Id = nino.Id,
+            Nombre = nino.Nombre,
+            UrlAvatar = "img/avatars/" + nino.Avatar
+        }).ToList();
+
+
+        LoadData();
+
+    }
+
+   private void LoadData()
+    {
+        _model = new PerfilesViewModel
+        {
+            NombreTutor = Estado.GetTutorActivo()?.Nombre,
+            PerfilesNinos = _profiles
+        };
+    }
+
+    private void ManageTutorProfile()
+    {
+        // Navegar a la pantalla de edición del perfil del tutor
+        Navigation.NavigateTo("/editar-perfil-tutor");
+    }
+
+    private void ManageChildProfile(int childId)
+    {
+        // Navegar a la pantalla de edición del perfil del niño
+        Navigation.NavigateTo($"/editar-perfil-nino/{childId}");
+    }
+    
+    private void AddNewProfile()
+    {
+        // Navegar a la pantalla de creación de nuevo perfil
+        Navigation.NavigateTo("/crear-perfil");
+    }
+
+    private async Task HandleLogout()
+    {
+        // --- Cerramos sesión ---
+        await JSRuntime.InvokeVoidAsync("alert", "Has cerrado sesión.");
+        Navigation.NavigateTo("/login", forceLoad: true); // forceLoad para limpiar el estado
+    }
+}

@@ -1,0 +1,82 @@
+﻿@page "/historial"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Presentacion.Compartido
+@layout AppLayout
+@inject NavigationManager Navigation
+
+<div class="history-page page-container">
+
+    <header class="history-header">
+        <div class="header-container container-max-width">
+            <h2>Historial de sesiones</h2>
+            <h3>Filtros</h3>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Niño</label>
+                    <div class="filter-button child-filter">
+                        <span class="dot"></span>
+                        <span>@_selectedChildName</span>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>Fecha</label>
+                    <div class="filter-button date-filter">
+                        <span>Últimos 30 días</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="history-page-container container-max-width">
+
+        <div class="history-list scroll-invisible">
+            @foreach (var session in _sessions)
+            {
+                <div class="history-item" @onclick="() => ViewSessionDetail(session.SesionId)">
+                    <div class="session-info">
+                        <span class="date">Fecha: @session.Fecha.ToString("dd/MM/yyyy")</span>
+                        <span class="effectiveness">Efectividad: @session.Cobertura%</span>
+                    </div>
+                    <div class="arrow-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private List<HistorialSesionesViewModel> _sessions = new();
+    private string _selectedChildName = Estado.GetNinoActivo().Nombre; 
+    protected override void OnInitialized()
+    {
+        
+        // --- Simulación para el Prototipo ---
+        LoadData();
+    }
+
+    private void LoadData()
+    {
+        _sessions = new List<HistorialSesionesViewModel>
+        {
+            new() { SesionId = 101, Fecha = new DateOnly(2025, 11, 17), Cobertura = 88 },
+            new() { SesionId = 102, Fecha = new DateOnly(2025, 10, 16), Cobertura = 85 },
+            new() { SesionId = 103, Fecha = new DateOnly(2025, 10, 15), Cobertura = 91 },
+            new() { SesionId = 104, Fecha = new DateOnly(2025, 10, 14), Cobertura = 82 },
+            new() { SesionId = 105, Fecha = new DateOnly(2025, 10, 13), Cobertura = 89 },
+            new() { SesionId = 105, Fecha = new DateOnly(2025, 10, 12), Cobertura = 89 },
+            new() { SesionId = 105, Fecha = new DateOnly(2025, 10, 11), Cobertura = 89 }
+        };
+    }
+
+    private void ViewSessionDetail(int sessionId)
+    {
+        // Navega a la página de reporte de sesión, pasando el ID de la sesión como parámetro
+        //Navigation.NavigateTo($"/sesion-reporte/{sessionId}");
+        Navigation.NavigateTo("/sesion-reporte");
+
+    }
+}

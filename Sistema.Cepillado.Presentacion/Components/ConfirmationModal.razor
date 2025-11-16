@@ -1,0 +1,50 @@
+﻿@if (IsVisible)
+{
+    <div class="modal-backdrop" @onclick="Close"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+            </div>
+            <div class="modal-body">
+                <p>@Message</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick="HandleAccept">Aceptar</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "Notificación";
+
+    [Parameter]
+    public string Message { get; set; } = "Operación completada.";
+
+    // Action a ejecutar cuando el usuario presiona Aceptar.
+    [Parameter]
+    public EventCallback OnAccept { get; set; }
+
+    public bool IsVisible { get; set; }
+
+    public void Show()
+    {
+        IsVisible = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        IsVisible = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleAccept()
+    {
+        Close();
+        // Ejecuta la acción definida por el componente padre (navegación).
+        await OnAccept.InvokeAsync(null);
+    }
+}

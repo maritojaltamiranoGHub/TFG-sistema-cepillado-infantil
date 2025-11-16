@@ -1,0 +1,180 @@
+.profiles-page-container {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.profiles-header {
+	background-color: #00A99D;
+	color: white;
+	padding: 24px;
+	padding-bottom: 48px; /* Más padding para que la tarjeta se superponga */
+	text-align: center;
+}
+
+	.profiles-header h1 {
+		font-size: 24px;
+		font-weight: bold;
+		margin: 0;
+	}
+
+.profiles-list-container {
+	flex: 1;
+	background-color: #f0f0f0;
+	border-top-left-radius: 32px;
+	border-top-right-radius: 32px;
+	margin-top: -32px; /* Efecto de superposición */
+	padding: 24px 16px;
+	position: relative; /* Para posicionar el botón flotante */
+}
+
+.profile-list {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.profile-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #fff;
+	padding: 16px;
+	border-radius: 20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 1. Resalta la tarjeta completa */
+.profile-item-active {
+	border: 2px solid #00C853; /* Borde de color de marca */
+	box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3); /* Sombra que destaca */
+}
+
+.tutor-profile {
+	background-color: #00A99D;
+	color: white;
+}
+
+.tutor-profile .profile-details {
+	flex-direction: column;
+	gap: 0;
+	text-align: left;
+	align-items: flex-start;
+}
+
+.profile-details {
+	display: flex;
+	align-items: center;
+	gap: 16px; /* Espacio entre el avatar y el nombre/badge */
+}
+
+	/* El nombre del niño. Aseguramos el orden */
+	.profile-details .name {
+		font-size: 18px;
+		font-weight: bold;
+	/* No se necesita orden si va después del avatar */
+	}
+
+.tutor-profile .profile-details .role .cerrar-sesion {
+	font-size: 14px;
+	opacity: 0.9;
+}
+
+.cerrar-sesion {
+	/*font-size: 14px;
+	opacity: 0.9;
+	cursor: pointer;
+	color: red;*/
+	background-color: #8B0000; /* Rojo oscuro (burdeos) */
+	color: white; /* Texto blanco */
+	padding: 10px 15px; /* Espaciado interno */
+	border-radius: 8px; /* Bordes ligeramente redondeados */
+	text-decoration: none; /* Quitar el subrayado predeterminado de los enlaces */
+	font-size: 1.1em; /* Tamaño del texto */
+	font-weight: bold; /* Texto en negrita */
+	display: flex; /* Para alinear el ícono y el texto */
+	align-items: center; /* Centrar verticalmente */
+	transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+	margin-left: auto; /* Empuja el botón a la derecha si no está justificado con space-between */
+}
+
+
+.child-profile .avatar {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background-color: #f0f0f0;
+}
+
+.btn-manage {
+	background-color: transparent;
+	color: white;
+	border: 1px solid white;
+	padding: 8px 16px;
+	border-radius: 16px;
+	font-size: 14px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.child-profile .btn-manage {
+	background-color: #00A99D;
+	border: none;
+}
+
+.btn-manage:hover {
+	background-color: white;
+	color: #00A99D;
+}
+
+.btn-fab {
+	position: fixed;
+	bottom: 100px;
+	right: 32px;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background-color: #00A99D;
+	color: white;
+	font-size: 36px;
+	line-height: 60px; /* Centra el '+' verticalmente */
+	text-align: center;
+	border: none;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	transition: transform 0.2s ease;
+}
+
+	.btn-fab:hover {
+		transform: scale(1.1);
+	}
+/* 2. Estilizar el badge 'ACTIVO' */
+.active-badge {
+	background-color: #00C853; /* Verde/éxito, contrasta con el #00A99D */
+	color: white;
+	padding: 3px 8px;
+	border-radius: 12px;
+	font-size: 0.75em; /* Ligeramente más pequeño que el nombre */
+	font-weight: 600;
+	text-transform: uppercase;
+	margin-left: -8px; /* Reduce un poco la separación del 'gap' de 16px para acercarlo al nombre */
+}
+
+
+/* --- ESTILO SUTIL PARA "Cerrar Sesión" --- */
+.profile-details .logout-link {
+	color: #f1f1f1; /* Blanco roto/gris muy claro */
+	font-size: 0.75em;
+	text-decoration: none; /* Asegúrate de que no tenga subrayado si es un enlace implícito */
+	font-weight: normal; /* No tan negrita */
+	cursor: pointer; /* Indica que es clicable */
+	transition: color 0.3s ease, text-shadow 0.3s ease; /* Transición suave para efectos */
+	padding: 2px 0; /* Pequeño padding si quieres que el área de hover sea un poco más grande */
+	display: inline-block; /* Necesario para que el padding y transiciones funcionen bien */
+}
+
+	.profile-details .logout-link:hover {
+		color: #FFC107; /* Amarillo/naranja suave al pasar el ratón */
+		text-shadow: 0 0 5px rgba(255, 255, 255, 0.7); /* Sombra de texto sutil */
+	}

@@ -1,0 +1,83 @@
+@page "/login"
+@using Sistema.Cepillado.Aplicacion.Servicios
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Presentacion.Compartido
+@inject IServicioTutores ServicioTutores
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="login-container">
+    <div class="header">
+        <h1>Accede a Toothhabit</h1>
+        <h3>Para empezar a guiar una sonrisa saludable.</h3>
+    </div>
+
+    <EditForm Model="@_model" OnValidSubmit="HandleLogin" class="login-form">
+        <DataAnnotationsValidator />
+        
+        <div class="input-group">
+            <InputText @bind-Value="_model.Email" class="form-control" placeholder="Ingresa tu email" />
+            <ValidationMessage For="@(() => _model.Email)" />
+        </div>
+
+        <div class="input-group">
+            <InputText @bind-Value="_model.Password" type="password" class="form-control" placeholder="Ingresa tu contraseña" />
+            <ValidationMessage For="@(() => _model.Password)" />
+        </div>
+
+        <button type="submit" class="login__btn-login button">Ingresar</button>
+        <button @onclick="NavigateToRegister" class="login__btn-register button-alt">Registrarse</button>
+    </EditForm>
+
+
+
+</div>
+
+@code {
+    private LoginViewModel _model = new();
+
+    private async Task HandleLogin()
+    {
+        // --- Login ---
+        
+        var result =  await ServicioTutores.LoginTutor(_model.Email, _model.Password);
+         
+        if (result != null) 
+         {
+            //await JSRuntime.InvokeVoidAsync("alert", "¡Login correcto!");
+            //le asignamos el tutor logueado a la clase estatica
+            Estado.SetTutorActivo(result);
+
+            //validamos si el tutor tiene perfiles de niños creados
+            var perfilesNinos = ServicioTutores.ObtenerNinosPorTutor(result.Id);
+            if (perfilesNinos.Count > 0)
+            {
+                // Si
+                // Si tiene perfiles, navegar a la página de selección de perfil de niño
+                Navigation.NavigateTo("/seleccionar-perfil");
+                return;
+            }else
+            {
+                // No
+                // Si no tiene perfiles, navegar a la página de creación de perfil de niño
+                Navigation.NavigateTo("/crear-perfil");
+                return;
+            }
+                                 
+           
+         }
+         else
+         {
+             await JSRuntime.InvokeVoidAsync("alert", "Email o contraseña incorrectos.");
+         }
+
+        
+    }
+
+    //Si presiona el boton de registrar
+    private void NavigateToRegister()
+    {
+        Navigation.NavigateTo("/registrar");
+    }
+}

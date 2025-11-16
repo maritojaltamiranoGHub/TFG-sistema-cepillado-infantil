@@ -1,0 +1,182 @@
+﻿@page "/editar-perfil-tutor"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Presentacion.Compartido
+@using Sistema.Cepillado.Aplicacion.Servicios
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Dominio.Modelos
+
+@inject IServicioTutores _perfiltutores
+@layout AppLayout
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="adorno-superior"></div>
+
+<div class="edit-tutor-profile page-container">
+    <div class="edit-profile-container container-max-width">
+        <header class="edit-profile-header">
+            <button class="back-button" @onclick="GoBack">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            </button>
+            <h3>Gestionar mi perfil</h3>
+        </header>
+
+        <div class="form-card">
+            <EditForm Model="@_model" OnValidSubmit="HandleUpdateProfile" class="edit-form">
+                <DataAnnotationsValidator />
+
+                <div class="input-group">
+                    <label for="nombre">Nombre</label>
+                    <InputText id="nombre" @bind-Value="_model.Nombre" class="form-control-static" disabled/>
+                    <ValidationMessage For="@(() => _model.Nombre)" />
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <InputText id="email" @bind-Value="_model.Email" class="form-control-static" disabled />
+                    <ValidationMessage For="@(() => _model.Email)" />
+                </div>
+
+                <div class="input-group">
+                    <label for="new-password">Nueva contraseña (opcional)</label>
+                    <InputText id="new-password"
+                               @bind-Value="_model.NuevaContrasena"
+                               @oninput="VerificarCambiosDeClave"
+                               type="password"
+                               class="form-control-static"
+                               placeholder="Dejar vacio para no cambiar" />
+                    <ValidationMessage For="@(() => _model.NuevaContrasena)" />
+                </div>
+
+                <div class="input-group">
+                    <label for="confirm-password">Confirmar nueva contraseña</label>
+                    <InputText id="confirm-password"
+                               @bind-Value="_model.ConfirmarNuevaContrasena"
+                               @oninput="VerificarCambiosDeClave"
+                               type="password"
+                               class="form-control-static" />
+                    <ValidationMessage For="@(() => _model.ConfirmarNuevaContrasena)" />
+                </div>
+
+                <button type="submit"
+                        class="btn-primary-large @(_hayCambiosDeClave ? "btn-highlight" : "")">
+                    Cambiar clave
+                </button>
+
+            </EditForm>
+
+            <button type="submit" class="btn-accent" @onclick="NavigateToLoadPattern">Gestionar Patrones</button>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private EditarPerfilTutorViewModel _model = new();
+    private bool _hayCambiosDeClave = false;
+    Tutor tutorActivo = Estado.GetTutorActivo();
+
+    protected override void OnInitialized()
+    {
+
+        
+
+        if (tutorActivo == null)
+        {
+
+            Navigation.NavigateTo("/login", forceLoad: true);
+            return;
+        }
+
+        //cargamos los datos del tutor activo en el modelo
+        _model.Nombre = tutorActivo.Nombre;
+        _model.Email = tutorActivo.Email;
+        _model.Id = tutorActivo.Id;
+        _model.NuevaContrasena = string.Empty;
+        _model.ConfirmarNuevaContrasena = string.Empty;
+
+        VerificarCambiosDeClave();
+    }
+
+
+
+    private async Task HandleUpdateProfile()
+    {
+        
+        Tutor tutorActualizado = new Tutor
+        {
+            Id = _model.Id,
+            Email = _model.Email,
+            Nombre = _model.Nombre,
+            Password = string.Empty
+        };
+ 
+        if (!string.IsNullOrEmpty(_model.NuevaContrasena))
+        {
+            
+            if (_model.NuevaContrasena != _model.ConfirmarNuevaContrasena)
+            {
+                
+                await JSRuntime.InvokeVoidAsync("alert", "Las contraseñas no coinciden.");
+                return; // Detener la ejecución si la validación falla
+            }
+
+            // Asignar la nueva contraseña para la actualización si es que se cargo
+            tutorActualizado.Password = _model.NuevaContrasena;
+
+            // Esto se ejecuta Solo si hubo cabio de Clave
+            var result = _perfiltutores.ActualizarPerfilTutor(tutorActualizado);
+
+            if (result == null)
+            {
+
+                // Las alertas bloquean la interfaz. Usa un modal o un componente de mensaje de error.
+                await JSRuntime.InvokeVoidAsync("alert", "Error al actualizar el perfil de tutor.");
+
+
+                // Si hay error, detenemos la navegación
+                return;
+            }
+
+            // Actualización exitosa
+            Estado.SetTutorActivo(result);
+            await JSRuntime.InvokeVoidAsync("alert", "Perfil de tutor actualizado correctamente.");
+
+
+            Navigation.NavigateTo("/perfiles");
+        }
+        //Tengo que ver como cambiar el nombre si es que lo permito en el futuro (15/11/2025)
+       
+    }
+
+    private async Task HandleLogout()
+    {
+
+        // --- Cerramos sesion---debemos limpiar el Estado.TutorActual y Estado.ninoactual.
+
+        Estado.LimpiarEstado();
+
+        await JSRuntime.InvokeVoidAsync("alert", "Has cerrado sesión.");
+        Navigation.NavigateTo("/login", forceLoad: true); // forceLoad para limpiar el estado
+
+    }
+
+    private void VerificarCambiosDeClave()
+    {
+        // El botón estará activo si CUALQUIERA de los campos de contraseña tiene texto.
+        _hayCambiosDeClave = !string.IsNullOrEmpty(_model.NuevaContrasena) ||
+                             !string.IsNullOrEmpty(_model.ConfirmarNuevaContrasena);
+    }
+    // Navegar a la pantalla de asignacion de patron de cepillado (trabajo Futuro)
+
+    private void NavigateToLoadPattern()
+    {
+        Navigation.NavigateTo($"/cargar-patron"); // Navegar a la pantalla de creacion de patrones
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/perfiles");
+    }
+}

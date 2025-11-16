@@ -1,0 +1,196 @@
+.report-container {
+	display: flex;
+	flex-direction: column;
+	background-color: #f0f0f0;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.report-header {
+	position: relative;
+	background-color: var(--color-primario);
+	z-index: 10;
+}
+
+	.report-header::after {
+		content: '';
+		position: absolute;
+		top: 100%;
+		background-color: transparent;
+		border-top-left-radius: 30px;
+		box-shadow: -20px -4px 0 0 var(--color-primario);
+		width: 80px;
+		height: 26px;
+	}
+
+	.report-header::before {
+		content: '';
+		position: absolute;
+		top: 100%;
+		right: 0;
+		background-color: transparent;
+		border-top-right-radius: 30px;
+		box-shadow: 20px -4px 0 0 var(--color-primario);
+		width: 80px;
+		height: 26px;
+	}
+
+
+.header-container {
+	display: flex;
+	align-items: center;
+	padding: 16px;
+	color: white;
+}
+
+.report__body {
+	padding-top: 10px;
+	flex-grow: 1;
+	overflow: auto;
+}
+
+.back-button {
+	background: none;
+	border: none;
+	color: white;
+	cursor: pointer;
+	padding: 8px;
+}
+
+.report-header h3 {
+	font-size: 2rem;
+	padding-left: 16px;
+	margin: 0;
+}
+
+.card {
+	background-color: #fff;
+	border-radius: 24px;
+	margin: 16px;
+	padding: 24px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	text-align: center;
+}
+
+	.card h2 {
+		font-size: 18px;
+		font-weight: bold;
+		color: #333;
+		margin: 0 0 24px 0;
+	}
+
+/* --- Estilos del Gráfico Circular de Progreso --- */
+.progress-circle {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	margin: 0 auto;
+	/* La magia del gradiente cónico */
+	background: conic-gradient(#00A99D calc(var(--progress-value) * 1%), #e0e0e0 0);
+	transition: background 0.5s ease;
+}
+
+.progress-circle-inner {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	background: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+	.progress-circle-inner span {
+		font-size: 36px;
+		font-weight: bold;
+		color: #333;
+	}
+/* --- Fin de Estilos del Gráfico --- */
+
+.denture-image {
+	width: 100%;
+	max-width: 250px;
+	margin: 0 auto 24px auto;
+}
+
+	.denture-image img {
+		width: 100%;
+		height: auto;
+	}
+
+.legend {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 24px;
+	font-size: 14px;
+}
+
+.legend-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.color-box {
+	width: 16px;
+	height: 16px;
+	border-radius: 4px;
+}
+
+	.color-box.optimal {
+		background-color: #00A99D;
+	}
+	/* Verde */
+	.color-box.improvable {
+		background-color: #FFC107;
+	}
+	/* Amarillo */
+	.color-box.insufficient {
+		background-color: #D9534F;
+	}
+/* Rojo */
+
+.footer-container {
+	background-color: #fff;
+	padding: 24px 16px;
+	margin-top: auto;
+	border-top: 1px solid #e0e0e0;
+}
+
+.report-footer {
+	display: flex;
+}
+
+.footer-item {
+	position: relative;
+	text-align: center;
+	flex-basis: 50%;
+	border-left: 1px solid #e0e0e0;
+}
+
+	.footer-item .label {
+		display: block;
+		font-size: 14px;
+		color: #666;
+		margin-bottom: 4px;
+	}
+
+	.footer-item .value {
+		display: block;
+		font-size: 18px;
+		font-weight: bold;
+		color: #00A99D;
+	}
+
+.footer-item:first-of-type {
+	border: none;
+}
+
+.footer-divider {
+	display: none;
+	width: 1px;
+	background-color: #e0e0e0;
+}

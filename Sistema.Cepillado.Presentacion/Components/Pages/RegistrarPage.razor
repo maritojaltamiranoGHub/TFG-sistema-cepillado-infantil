@@ -1,0 +1,75 @@
+@page "/registrar"
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Dominio.Modelos
+@inject IServicioTutores ServicioTutores
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="register-container">
+    <div class="header">
+        <h1>Crea tu cuenta</h1>
+        <h3>Para empezar a guiar una sonrisa saludable.</h3>
+    </div>
+
+    <EditForm Model="@_model" OnValidSubmit="HandleRegistration" class="register-form">
+        <DataAnnotationsValidator />
+
+        <div class="input-group">
+            <InputText @bind-Value="_model.Nombre" class="form-control" placeholder="Ingresa tu nombre" />
+            <ValidationMessage For="@(() => _model.Nombre)" class="validation-message" />
+        </div>
+
+        <div class="input-group">
+            <InputText @bind-Value="_model.Email" class="form-control" placeholder="Ingresa tu email" />
+            <ValidationMessage For="@(() => _model.Email)" class="validation-message" />
+        </div>
+
+        <div class="input-group">
+            <InputText @bind-Value="_model.Contrasena" type="password" class="form-control" placeholder="Ingresa tu contraseña" />
+            <ValidationMessage For="@(() => _model.Contrasena)" class="validation-message" />
+        </div>
+
+        <div class="input-group">
+            <InputText @bind-Value="_model.ConfirmarContrasena" type="password" class="form-control" placeholder="Ingresa nuevamente tu contraseña" />
+            <ValidationMessage For="@(() => _model.ConfirmarContrasena)" class="validation-message" />
+        </div>
+
+        <button type="submit" class="register__btn-login button">Crear cuenta</button>
+    </EditForm>
+
+</div>
+
+
+
+@code {
+
+    private RegistroViewModel _model = new();
+
+    private async Task HandleRegistration()
+    {
+        // --- Lógica de Registro ---
+        // Llamamos al  servicio de la capa de Aplicación:
+        var result = ServicioTutores.RegistrarTutor(new Tutor()
+        {
+            Nombre = _model.Nombre,
+            Apellido = "",
+            Email = _model.Email,
+            Password = _model.Contrasena
+
+        });
+
+        if (result.Nombre == _model.Nombre)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "¡Alta correcta! Serás redirigido a la pantalla de inicio de sesión.");
+
+            Navigation.NavigateTo("/login");
+        }else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "El Alta de Usuario no fue posible, intente luego");
+        }
+
+      
+        
+    }
+}

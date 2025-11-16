@@ -1,0 +1,76 @@
+.select-profile-container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 40px 24px;
+	background-color: #f0f0f0;
+	box-sizing: border-box;
+}
+
+	.select-profile-container h1 {
+		margin-bottom: 70px; /* Más espacio después del título */
+	}
+
+.profiles-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr; /* Crea una cuadrícula de 2 columnas */
+	gap: 40px; /* Espacio entre los perfiles */
+	width: 100%;
+	max-width: 350px;
+}
+
+.profile-card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px; /* Espacio entre el avatar y el nombre */
+	cursor: pointer;
+}
+
+.avatar-circle {
+	width: 100px; /* Tamaño del círculo */
+	height: 100px;
+	border-radius: 50%; /* Lo hace un círculo perfecto */
+	background-color: #ffffff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil como en el diseño */
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-card:hover .avatar-circle {
+	transform: scale(1.05); /* Agranda un poco el círculo al pasar el mouse */
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-circle img {
+	width: 70%; /* La imagen es un poco más pequeña que el círculo */
+	height: 70%;
+	object-fit: contain;
+}
+
+.profile-name {
+	font-size: 16px;
+	color: #333;
+	font-weight: 500;
+}
+.btn-fab {
+	position: fixed;
+	bottom: 100px;
+	right: 32px;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background-color: #00A99D;
+	color: white;
+	font-size: 36px;
+	line-height: 60px; /* Centra el '+' verticalmente */
+	text-align: center;
+	border: none;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	transition: transform 0.2s ease;
+}

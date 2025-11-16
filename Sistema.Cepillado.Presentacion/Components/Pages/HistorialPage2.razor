@@ -1,0 +1,170 @@
+﻿@page "/historial2"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Presentacion.Compartido
+@layout AppLayout
+@inject NavigationManager Navigation
+
+<div class="history-page page-container">
+
+    <header class="history-header">
+        <div class="header-container container-max-width">
+            <h2>Historial de sesiones 2</h2>
+            <h3>Filtros</h3>
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Niño</label>
+                    <div class="filter-button child-filter">
+                        <span class="dot"></span>
+                        <span>@_selectedChildName</span>
+                    </div>
+                </div>
+
+                <!--Filtro de Fecha como Desplegable (select) -->
+                <div class="filter-group">
+                    <label for="date-filter">Fecha</label>
+                    <select id="date-filter" @bind="@_selectedFilter" @bind:event="onchange" class="filter-select">
+                        @foreach (var option in _filterOptions)
+                        {
+                            <option value="@option.Key">@option.Value</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <div class="history-page-container container-max-width">
+
+        <!-- Mostrar la lista FILTRADA -->
+        <div class="history-list scroll-invisible">
+            @if (_filteredSessions.Any())
+            {
+                @foreach (var session in _filteredSessions)
+                {
+                    <div class="history-item" @onclick="() => ViewSessionDetail(session.SesionId)">
+                        <div class="session-info">
+                            <span class="date">Fecha: @session.Fecha.ToString("dd/MM/yyyy")</span>
+                            <span class="effectiveness">Efectividad: @session.Cobertura%</span>
+                        </div>
+                        <div class="arrow-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="no-data-message">No se encontraron sesiones para el filtro seleccionado.</p>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    // Definición de las claves de filtro
+    private const string FILTER_TODAY = "DAY";
+    private const string FILTER_WEEK = "WEEK";
+    private const string FILTER_MONTH = "MONTH";
+    private const string FILTER_ALL = "ALL";
+
+    // Lista de todas las sesiones obtenidas de la DB
+    private List<HistorialSesionesViewModel> _allSessions = new();
+
+    // Lista de sesiones que se muestran al usuario (filtradas)
+    private List<HistorialSesionesViewModel> _filteredSessions = new();
+
+    // Opciones del desplegable: Key (para lógica) y Value (para mostrar)
+    private Dictionary<string, string> _filterOptions = new()
+    {
+        { FILTER_MONTH, "Último mes" },
+        { FILTER_WEEK, "Última Semana" },
+        { FILTER_TODAY, "Último día" },
+        { FILTER_ALL, "Todos" }
+    };
+
+    // Propiedad para guardar la opción seleccionada. Por defecto, Último mes.
+    private string _selectedFilter = FILTER_MONTH;
+
+    private string _selectedChildName = Estado.GetNinoActivo().Nombre;
+
+    protected override void OnInitialized()
+    {
+        // 1. Cargar todos los datos de sesión (simulación)
+        LoadAllData();
+
+        // 2. Aplicar el filtro inicial (Último mes)
+        ApplyFilter();
+    }
+
+    //Captura el cambio en el desplegable y aplica el filtro
+    private void OnFilterChanged(ChangeEventArgs e)
+    {
+        _selectedFilter = e.Value.ToString();
+        ApplyFilter();
+    }
+
+    private void LoadAllData()
+    {
+        
+        // Simulación con fechas específicas para que el filtro funcione con tus datos de ejemplo
+        _allSessions = new List<HistorialSesionesViewModel>
+        {
+            new() { SesionId = 101, Fecha = DateOnly.FromDateTime(DateTime.Today), Cobertura = 88 }, // Hoy
+            new() { SesionId = 102, Fecha = DateOnly.FromDateTime(DateTime.Today.AddDays(-1)), Cobertura = 85 }, // Ayer
+            new() { SesionId = 103, Fecha = DateOnly.FromDateTime(DateTime.Today.AddDays(-6)), Cobertura = 91 }, // Hace 6 días (Dentro de la última semana)
+            new() { SesionId = 104, Fecha = DateOnly.FromDateTime(DateTime.Today.AddDays(-10)), Cobertura = 82 }, // Hace 10 días
+            new() { SesionId = 105, Fecha = DateOnly.FromDateTime(DateTime.Today.AddDays(-20)), Cobertura = 89 }, // Hace 20 días
+            new() { SesionId = 106, Fecha = DateOnly.FromDateTime(DateTime.Today.AddDays(-40)), Cobertura = 89 }, // Hace 40 días (Fuera del último mes)
+            new() { SesionId = 107, Fecha = DateOnly.FromDateTime(DateTime.Today.AddDays(-100)), Cobertura = 89 } // Hace 100 días
+        };
+    }
+
+    private void ApplyFilter()
+    {
+        // La fecha de referencia es siempre el inicio de hoy
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly startDate;
+
+        switch (_selectedFilter)
+        {
+            case FILTER_TODAY:
+                startDate = today.AddDays(-1); // 24 horas atrás
+                _filteredSessions = _allSessions
+                    .Where(s => s.Fecha > startDate)
+                    .ToList();
+                break;
+
+            case FILTER_WEEK:
+                startDate = today.AddDays(-7);
+                _filteredSessions = _allSessions
+                    .Where(s => s.Fecha > startDate)
+                    .ToList();
+                break;
+
+            case FILTER_MONTH:
+                startDate = today.AddDays(-30);
+                _filteredSessions = _allSessions
+                    .Where(s => s.Fecha > startDate)
+                    .ToList();
+                break;
+
+            case FILTER_ALL:
+            default:
+                // Mostrar todas las sesiones
+                _filteredSessions = _allSessions;
+                break;
+        }
+
+        // Asegurar que Blazor actualice la UI
+        StateHasChanged();
+    }
+
+    private void ViewSessionDetail(int sessionId)
+    {
+        // Navega a la página de reporte de sesión, pasando el ID de la sesión como parámetro
+        // Navigation.NavigateTo($"/sesion-reporte/{sessionId}");
+        Navigation.NavigateTo("/sesion-reporte");
+    }
+}

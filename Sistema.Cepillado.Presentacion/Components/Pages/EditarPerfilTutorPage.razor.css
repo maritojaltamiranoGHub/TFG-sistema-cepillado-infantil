@@ -1,0 +1,171 @@
+/* Este archivo puede importar los estilos de la otra página de edición para reutilizar */
+.edit-profile-container {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	z-index: 1;
+}
+
+.edit-profile-header {
+	position: relative;
+	margin-top: 30px;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+	padding: 16px;
+	color: white;
+	flex-shrink: 0; /* Evita que el header se encoja */
+}
+
+.back-button {
+	position: absolute;
+	left: 10px;
+	background: none;
+	border: none;
+	color: white;
+	cursor: pointer;
+	padding: 8px;
+	transform: scaleZ(-1); /* Gira la flecha para que apunte a la izquierda */
+}
+
+.edit-profile-header h3 {
+	font-size: 2rem;
+	margin: 0;
+}
+
+.form-card {
+	background-color: #fff;
+	border-radius: 24px;
+	margin: 20px 16px 16px 16px; /* Efecto de superposición y márgenes */
+	padding: 24px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	z-index: 1; /* Asegura que la tarjeta esté sobre el fondo */
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+	.form-card h2 {
+		font-size: 18px;
+		font-weight: bold;
+		color: #333;
+		text-align: center;
+		margin: 0 0 16px 0;
+	}
+
+.edit-form {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.input-group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+	.input-group label {
+		font-size: 14px;
+		color: #00A99D;
+		font-weight: 500;
+	}
+
+	.input-group[disabled] {
+		background-color: #f0f0f0; /* Un gris muy claro, sutilmente diferente al blanco */
+		color: #666; /* Un gris más oscuro para el texto deshabilitado */
+		border-color: #e0e0e0; /* Un borde un poco más claro para indicar inactividad */
+		cursor: not-allowed; /* Cambia el cursor para indicar que no es editable */
+	}
+
+.form-control-static {
+	width: 100%;
+	padding: 16px;
+	border: none; /* Sin borde */
+	border-radius: 12px;
+	background-color: #f0f0f0; /* Fondo gris claro */
+	font-size: 16px;
+	box-sizing: border-box;
+	color: #333;
+}
+
+.btn-primary-large, .btn-secondary-large, .btn-accent {
+	padding: 16px 20px;
+	border-radius: 24px;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+.btn-primary-large {
+	margin-top: 20px;
+	background-color: #f0f0f0; /* Botón de guardar cambios inactivo */
+	color: #888;
+	border: none;
+}
+
+/* Podríamos añadir una clase .dirty para cuando el formulario cambie */
+.edit-form.dirty .btn-primary-large {
+	background-color: #00A99D;
+	color: white;
+}
+
+.btn-secondary-large {
+	background-color: #00A99D;
+	color: white;
+	border: none;
+}
+
+/*boton defs patron
+
+/* --- Estilo de Botón de Acento (Gestionar Patrones) --- */
+
+.btn-accent {
+	/* Color de fondo: Turquesa brillante (ajusta el código si el color exacto es diferente) */
+	background-color: #00BFB3;
+	/* Color del texto: Blanco o un gris muy claro para alto contraste */
+	color: #FFFFFF;
+	/* Sombra sutil para dar profundidad */
+	box-shadow: 0 4px 10px rgba(0, 191, 179, 0.4);
+}
+
+	/* --- Efecto Hover (Mejora la UX) --- */
+	.btn-accent:hover {
+		/* Oscurece el color ligeramente para dar feedback de click */
+		background-color: #00A69A;
+		/* Levanta la sombra para un efecto de "empuje" */
+		box-shadow: 0 6px 15px rgba(0, 191, 179, 0.6);
+	}
+
+/* --- Estilos Adicionales o Específicos para esta página --- */
+
+.divider {
+	border: none;
+	border-top: 1px solid #eee;
+	margin: 8px 0;
+}
+
+.btn-danger-large {
+	padding: 16px 20px;
+	border-radius: 24px;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	background-color: #D9534F; /* Color rojo */
+	color: white;
+	border: none;
+}
+
+	.btn-danger-large:hover {
+		background-color: #C9302C; /* Rojo más oscuro */
+	}
+.btn-highlight {
+	
+	 border: 3px solid #00C853 !important; 
+	 background-color: white !important; 
+	 color: #00C853 !important;
+}

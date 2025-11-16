@@ -1,0 +1,115 @@
+.dashboard-container {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	padding: 24px;
+	z-index: 1;
+	width: 100%;
+}
+
+.dashboard-header {
+	text-align: center;
+	padding: 16px 0;
+}
+
+.logo {
+	height: 50px;
+	margin: -10px 0;
+}
+
+.profile-card-main {
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	border-radius: 24px;
+	padding: 16px;
+	gap: 16px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatar {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background-color: #f0f0f0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+	.avatar img {
+		width: 70%;
+		height: 70%;
+		object-fit: contain;
+	}
+
+.profile-info {
+	display: flex;
+	flex-direction: column;
+}
+
+	.profile-info .name {
+		font-size: 18px;
+		font-weight: bold;
+		color: #333;
+	}
+
+	.profile-info .change-user {
+		font-size: 14px;
+		color: #00A99D;
+		cursor: pointer;
+	}
+
+.session-card {
+	background-color: #fff;
+	border-radius: 24px;
+	padding: 24px;
+	text-align: center;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+	.session-card h2 {
+		font-size: 18px;
+		font-weight: bold;
+		color: #333;
+		margin: 0 0 16px 0;
+	}
+
+.session-summary .percentage {
+	font-size: 64px;
+	font-weight: bold;
+	color: #00A99D;
+	display: block;
+}
+
+.session-summary .label {
+	font-size: 16px;
+	color: #00A99D;
+	display: block;
+	margin-top: -8px;
+	margin-bottom: 24px;
+}
+
+.session-summary .details {
+	font-size: 14px;
+	color: #666;
+	display: block;
+}
+
+.btn-primary-large {
+	padding: 20px;
+	border: none;
+	border-radius: 24px;
+	background-color: #fff;
+	color: #00A99D;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+	.btn-primary-large:hover {
+		background-color: #e0e0e0;
+	}

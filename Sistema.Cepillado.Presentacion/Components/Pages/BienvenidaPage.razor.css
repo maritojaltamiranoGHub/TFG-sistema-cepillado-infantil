@@ -1,0 +1,13 @@
+.splash-container {
+	display: flex;
+	justify-content: center; /* Centra horizontalmente */
+	align-items: center; /* Centra verticalmente */
+	height: 100vh; /* Ocupa el 100% de la altura de la vista */
+	width: 100vw; /* Ocupa el 100% del ancho de la vista */
+	background-color: #1abc9c; /* Un color turquesa similar al de la imagen */
+}
+
+.logo {
+	max-width: 60%; /* El logo ocupará como máximo el 60% del ancho de la pantalla */
+	height: auto; /* La altura se ajustará automáticamente */
+}

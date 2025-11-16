@@ -1,0 +1,87 @@
+﻿@page "/crear-perfil"
+@using Sistema.Cepillado.Presentacion.ViewModels
+@using Sistema.Cepillado.Dominio.Interfaces
+@using Sistema.Cepillado.Dominio.Modelos
+@using Sistema.Cepillado.Presentacion.Compartido
+@inject IServicioPerfilNino servicioPerfilNino
+@inject IJSRuntime JSRuntime
+@inject NavigationManager Navigation
+
+
+<div class="profile">
+    <div class="profile-container">
+        <div class="header">
+            <h1>Crear perfil</h1>
+            <h3>Añade a tu primer pequeño.</h3>
+        </div>
+
+        <EditForm Model="@_model" OnValidSubmit="HandleSaveProfile" class="profile-form">
+            <DataAnnotationsValidator />
+
+            <div class="input-group">
+                <InputText @bind-Value="_model.Nombre" class="form-control" placeholder="Nombre del niño" />
+                <ValidationMessage For="@(() => _model.Nombre)" />
+            </div>
+
+            <div class="input-group">
+                <InputDate @bind-Value="_model.FechaNacimiento" class="form-control" placeholder="Fecha de nacimiento" />
+                <ValidationMessage For="@(() => _model.FechaNacimiento)" />
+            </div>
+
+            <div class="avatar-selector">
+                <h2 class="avatar-selector__subtitle">Elige un avatar</h2>
+                <div class="avatar-options">
+                    @foreach (var avatar in _avatars)
+                    {
+                        <div class="avatar-option @(IsAvatarSelected(avatar) ? "selected" : "")" @onclick="() => SelectAvatar(avatar)">
+                            <img src="img/avatars/@(avatar)" alt="Avatar @(avatar)" />
+                        </div>
+                    }
+                </div>
+                <ValidationMessage For="@(() => _model.AvatarSeleccionado)" />
+            </div>
+
+            <button type="submit" class="create-profile__btn-save button">Guardar perfil</button>
+        </EditForm>
+    </div>
+</div>
+
+
+
+@code {
+    private CrearPerfilViewModel _model = new();
+    private List<string> _avatars = new() { "avatar1.png", "avatar2.png", "avatar3.png", "avatar4.png" };
+
+    private void SelectAvatar(string avatar)
+    {
+        _model.AvatarSeleccionado = avatar;
+    }
+
+    private bool IsAvatarSelected(string avatar)
+    {
+        return _model.AvatarSeleccionado == avatar;
+    }
+
+    private async Task HandleSaveProfile()
+    {
+
+        // crear el perfil del niño llamando al servicio correspondiente
+        
+        var result = servicioPerfilNino.CrearPerfilNino(new Nino()
+        {
+            Nombre = _model.Nombre,
+            FechaNacimiento = _model.FechaNacimiento,
+            Avatar = _model.AvatarSeleccionado
+        }, Estado.GetTutorActivo() );
+        if (result.Nombre == _model.Nombre)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "¡Perfil creado correctamente! Serás redirigido a la pantalla principal.");
+            Navigation.NavigateTo("/seleccionar-perfil");
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "No fue posible crear el perfil, intente luego.");
+        }
+        
+    }
+}
