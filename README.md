@@ -1,6 +1,6 @@
 # TFG-sistema-cepillado-infantil (Prototipo)
 
-Este repositorio contiene el código fuente del prototipo desarrollado para el Trabajo Final de Grado (TFG) titulado: *"Análisis Algorítmico del Cepillado Infantil: Validación de una Metodología de Bajo Costo con un Prototipo Móvil Sensorizado"*.
+Este repositorio contiene el código fuente (Parcial) del prototipo desarrollado para el Trabajo Final de Grado (TFG) titulado: *"Análisis Algorítmico del Cepillado Infantil: Validación de una Metodología de Bajo Costo con un Prototipo Móvil Sensorizado"*.
 
 ---
 
@@ -46,5 +46,5 @@ Para compilar y ejecutar este prototipo, se necesita el siguiente entorno de des
 ##  Autor
 
 -   **MARIO JAVIER ALTAMIRANO - VINF013416**
--   Trabajo Final de Grado para la carrera de licenciatura en Informatica
+-   Trabajo Final de Grado para la carrera de licenciatura en Informática
 -   UNIVERSIDAD SIGLO 21 - 2025
